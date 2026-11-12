@@ -23,13 +23,8 @@ export class ManageJobs {
     this.service.getJobs().subscribe(j => (this.jobs = j));
   }
 
-  toggle(job: Job) {
-    const status = job.status === 'open' ? 'closed' : 'open';
-    this.service.updateJob(job.id, { status }).subscribe(() => this.load());
-  }
-
   remove(job: Job) {
-    if (confirm(`Delete "${job.title}"? This also removes its applicants.`)) {
+    if (confirm(`Delete "${job.title}"?`)) {
       this.service.deleteJob(job.id).subscribe(() => this.load());
     }
   }

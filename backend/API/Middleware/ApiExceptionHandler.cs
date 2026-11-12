@@ -4,10 +4,7 @@ using SkillBridge.Application.Exceptions;
 
 namespace SkillBridge.Api.Middleware;
 
-/// <summary>
-/// Turns application exceptions into RFC 7807 problem responses so clients get
-/// 400/401/403/404/409 instead of a generic 500.
-/// </summary>
+
 public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(

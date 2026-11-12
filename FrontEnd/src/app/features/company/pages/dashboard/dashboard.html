@@ -1,21 +1,12 @@
-<h1>Company dashboard</h1>
+<h1>Welcome, {{ displayName }}</h1>
 
-@if (stats$ | async; as stats) {
+@if (jobs$ | async; as jobs) {
   <div class="stats">
-    <div class="stat"><span>{{ stats.activeJobs }}</span>Active jobs</div>
-    <div class="stat"><span>{{ stats.totalApplicants }}</span>Total applicants</div>
-    <div class="stat"><span>{{ stats.shortlisted }}</span>Shortlisted</div>
+    <div class="stat"><span>{{ jobs.length }}</span>Posted jobs</div>
   </div>
 
   <div class="links">
     <a routerLink="/company/post-job">+ Post a job</a>
     <a routerLink="/company/jobs">Manage jobs</a>
-  </div>
-
-  <h2>Recent applicants</h2>
-  <div class="grid">
-    @for (a of stats.recent; track a.id) {
-      <app-applicant-card [applicant]="a" />
-    }
   </div>
 }

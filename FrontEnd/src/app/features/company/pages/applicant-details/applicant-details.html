@@ -1,39 +1,79 @@
-<p>applicant-details works!</p>
-@if (applicant) {
-  <a [routerLink]="['/company/jobs', applicant.jobId, 'applicants']">← Back to applicants</a>
 
-  <h1>{{ applicant.name }}</h1>
-  <p>{{ applicant.email }} · Applied {{ applicant.appliedAt | date: 'mediumDate' }}</p>
+<div class="applicant-page">
+  @if (applicant) {
+    <a
+      class="back-link"
+      [routerLink]="['/company/jobs', applicant.jobId, 'applicants']"
+    >
+      ← Back to applicants
+    </a>
 
-  <section>
-    <h3>Match score</h3>
-    <strong>{{ applicant.matchScore }}%</strong>
-  </section>
+    <div class="page-header">
+      <div>
+        <p class="eyebrow">APPLICANT PROFILE</p>
+        <h1>{{ applicant.name }}</h1>
+        <p class="applicant-meta">
+          {{ applicant.email }} · Applied
+          {{ applicant.appliedAt | date: 'mediumDate' }}
+        </p>
+      </div>
 
-  <section>
-    <h3>Experience</h3>
-    <p>{{ applicant.experience }}</p>
-  </section>
+      <div class="match-badge">
+        <span>Skill match</span>
+        <strong>{{ applicant.matchScore }}%</strong>
+      </div>
+    </div>
 
-  <section>
-    <h3>About</h3>
-    <p>{{ applicant.bio }}</p>
-  </section>
+    <div class="details-grid">
+      <main class="main-content">
+        <section class="detail-card">
+          <h2>About the applicant</h2>
+          <p class="description">
+            {{ applicant.bio || 'No information provided yet.' }}
+          </p>
+        </section>
 
-  <section>
-    <h3>Skills</h3>
-    @for (s of applicant.skills; track s) {
-      <span class="chip">{{ s }}</span>
-    }
-  </section>
+        <section class="detail-card">
+          <h2>Experience</h2>
+          <p class="description">
+            {{ applicant.experience || 'No experience details provided yet.' }}
+          </p>
+        </section>
 
-  <section>
-    <h3>Application status</h3>
-    <app-applicant-status
-      [status]="applicant.status"
-      [editable]="true"
-      (changed)="updateStatus($event)" />
-  </section>
-} @else {
-  <p>Applicant not found.</p>
-}
+        <section class="detail-card">
+          <h2>Skills</h2>
+          @if (applicant.skills?.length) {
+            <div class="skills-list">
+              @for (s of applicant.skills; track s) {
+                <span class="skill-chip">{{ s }}</span>
+              }
+            </div>
+          } @else {
+            <p class="empty-text">No skills listed yet.</p>
+          }
+        </section>
+      </main>
+
+      <aside class="sidebar-card">
+        <h2>Application status</h2>
+        <p class="sidebar-description">
+          Review the applicant and update their application status.
+        </p>
+
+        <app-applicant-status
+          [status]="applicant.status"
+          [editable]="true"
+          (changed)="updateStatus($event)"
+        />
+      </aside>
+    </div>
+  } @else {
+    <div class="not-found">
+      <h2>Applicant not found</h2>
+      <p>This applicant's details could not be loaded.</p>
+      <button class="back-link" routerLink="/company/applicants">
+        ← Back 
+      </button>
+    </div>
+  }
+</div>

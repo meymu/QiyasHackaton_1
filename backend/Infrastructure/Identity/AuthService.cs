@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SkillBridge.Application.Commands.Auth;
 using SkillBridge.Application.DTOs.Auth;
 using SkillBridge.Application.Exceptions;
@@ -74,7 +75,14 @@ public sealed class AuthService(UserManager<ApplicationUser> userManager, SkillB
         await db.SaveChangesAsync(ct);
         await transaction.CommitAsync(ct);
 
-        return new UserDto(user.Id, user.Email!, roleName);
+        var displayName = command.Role switch
+        {
+            UserRole.Candidate => command.Candidate!.FullName.Trim(),
+            UserRole.Employer => command.Employer!.CompanyName.Trim(),
+            _ => user.Email!
+        };
+
+        return new UserDto(user.Id, user.Email!, roleName, displayName);
     }
 
     public async Task<UserDto> ValidateCredentialsAsync(
@@ -101,7 +109,8 @@ public sealed class AuthService(UserManager<ApplicationUser> userManager, SkillB
         var role = roles.FirstOrDefault()
                    ?? throw new ForbiddenException("This account has no role assigned.");
 
-        return new UserDto(user.Id, user.Email!, role);
+        var displayName = await GetDisplayNameAsync(user.Id, role, user.Email!, ct);
+        return new UserDto(user.Id, user.Email!, role, displayName);
     }
 
     public async Task<UserDto?> GetByIdAsync(int userId, CancellationToken ct = default)
@@ -110,8 +119,27 @@ public sealed class AuthService(UserManager<ApplicationUser> userManager, SkillB
         if (user is null) return null;
 
         var roles = await userManager.GetRolesAsync(user);
-        return new UserDto(user.Id, user.Email!, roles.FirstOrDefault() ?? string.Empty);
+        var role = roles.FirstOrDefault() ?? string.Empty;
+        var displayName = await GetDisplayNameAsync(user.Id, role, user.Email!, ct);
+        return new UserDto(user.Id, user.Email!, role, displayName);
     }
+
+    private async Task<string> GetDisplayNameAsync(
+        int userId, string role, string email, CancellationToken ct) =>
+        role switch
+        {
+            nameof(UserRole.Candidate) =>
+                await db.CandidateProfiles
+                    .Where(profile => profile.UserId == userId)
+                    .Select(profile => profile.FullName)
+                    .FirstOrDefaultAsync(ct) ?? email,
+            nameof(UserRole.Employer) =>
+                await db.EmployerProfiles
+                    .Where(profile => profile.UserId == userId)
+                    .Select(profile => profile.CompanyName)
+                    .FirstOrDefaultAsync(ct) ?? email,
+            _ => email
+        };
 
     private static string? NullIfBlank(string? value) =>
         string.IsNullOrWhiteSpace(value) ? null : value.Trim();

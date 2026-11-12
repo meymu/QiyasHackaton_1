@@ -14,6 +14,7 @@
     </header>
   
   
+    @if (dashboard$ | async; as dashboard) {
     <!-- Statistics -->
     <section class="stats-grid">
   
@@ -25,7 +26,7 @@
   
         <div>
           <p>Applications</p>
-          <h2>{{ stats.applications }}</h2>
+          <h2>{{ dashboard.applications }}</h2>
         </div>
   
       </div>
@@ -39,7 +40,7 @@
   
         <div>
           <p>Pending Applications</p>
-          <h2>{{ stats.pending }}</h2>
+          <h2>{{ dashboard.pending }}</h2>
         </div>
   
       </div>
@@ -53,7 +54,7 @@
   
         <div>
           <p>Shortlisted</p>
-          <h2>{{ stats.shortlisted }}</h2>
+          <h2>{{ dashboard.shortlisted }}</h2>
         </div>
   
       </div>
@@ -90,7 +91,7 @@
       <!-- Jobs -->
       <div class="jobs-grid">
   
-        @for (job of recommendedJobs; track job.id) {
+        @for (job of dashboard.recommendedJobs; track job.id) {
   
           <app-job-card
             [job]="job">
@@ -101,5 +102,9 @@
       </div>
   
     </section>
-  
+    } @else if (errorMessage) {
+      <p role="alert">{{ errorMessage }}</p>
+    } @else {
+      <p>Loading dashboard...</p>
+    }
   </div>

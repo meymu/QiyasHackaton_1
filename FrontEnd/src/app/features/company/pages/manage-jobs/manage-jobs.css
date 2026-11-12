@@ -50,3 +50,16 @@ button {
 }
 
 .empty { color: #6b7280; }
+
+.back-link {
+  display: inline-block;
+  padding: 8px 14px;
+  margin-bottom: 28px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}

@@ -67,7 +67,7 @@
 
     @if (accountType === 'candidate') {
 
-      <form class="register-form">
+      <form class="register-form" (ngSubmit)="onSubmit()">
 
         <h2>Job Seeker Registration</h2>
 
@@ -80,7 +80,11 @@
           <input
             id="candidateName"
             type="text"
+            name="fullName"
             placeholder="Enter your full name"
+            [(ngModel)]="fullName"
+            required
+            maxlength="150"
           />
 
         </div>
@@ -95,7 +99,11 @@
           <input
             id="candidateEmail"
             type="email"
+            name="email"
             placeholder="Enter your email"
+            [(ngModel)]="email"
+            required
+            maxlength="256"
           />
 
         </div>
@@ -112,8 +120,15 @@
             <input
               id="candidatePassword"
               type="password"
+              name="password"
               placeholder="Create a password"
+              [(ngModel)]="password"
+              required
+              minlength="8"
+              maxlength="128"
+              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,128}"
             />
+            <small>Use at least 8 characters, including uppercase, lowercase, and a number.</small>
 
           </div>
 
@@ -127,7 +142,10 @@
             <input
               id="candidateConfirmPassword"
               type="password"
+              name="confirmPassword"
               placeholder="Confirm your password"
+              [(ngModel)]="confirmPassword"
+              required
             />
 
           </div>
@@ -135,22 +153,43 @@
         </div>
 
 
+        <div class="form-row">
+          <div class="form-group">
+            <label for="institution">Institution</label>
+            <input id="institution" name="institution" type="text"
+              placeholder="Your school or university" [(ngModel)]="institution"
+              required maxlength="200" />
+          </div>
+
+          <div class="form-group">
+            <label for="fieldOfStudy">Field of Study</label>
+            <input id="fieldOfStudy" name="fieldOfStudy" type="text"
+              placeholder="e.g. Computer Science" [(ngModel)]="fieldOfStudy"
+              required maxlength="150" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="degreeLevel">Degree Level</label>
+            <input id="degreeLevel" name="degreeLevel" type="text"
+              placeholder="e.g. Bachelor's" [(ngModel)]="degreeLevel"
+              required maxlength="100" />
+          </div>
+
+          <div class="form-group">
+            <label for="graduationYear">Graduation Year</label>
+            <input id="graduationYear" name="graduationYear" type="number"
+              min="2000" max="2100" [(ngModel)]="graduationYear"
+              required />
+          </div>
+        </div>
+
         <div class="form-group">
-
-          <label for="skills">
-            Skills
-          </label>
-
-          <input
-            id="skills"
-            type="text"
-            placeholder="e.g. Angular, C#, SQL"
-          />
-
-          <small>
-            Separate multiple skills with commas.
-          </small>
-
+          <label for="headline">Professional Headline <span>(Optional)</span></label>
+          <input id="headline" name="headline" type="text"
+            placeholder="e.g. Junior Software Developer" [(ngModel)]="headline"
+            maxlength="200" />
         </div>
 
 
@@ -164,15 +203,27 @@
           <input
             id="github"
             type="url"
+            name="gitHubUrl"
             placeholder="https://github.com/username"
+            [(ngModel)]="gitHubUrl"
+            maxlength="500"
           />
 
         </div>
 
+        <div class="form-group">
+          <label for="portfolio">Portfolio URL <span>(Optional)</span></label>
+          <input id="portfolio" name="portfolioUrl" type="url"
+            placeholder="https://example.com" [(ngModel)]="portfolioUrl"
+            maxlength="500" />
+        </div>
 
-        <button type="submit" class="submit-btn"
-        routerLink="/candidate/dashboard">
-          Create Job Seeker Account
+        @if (errorMessage) {
+          <p class="form-error" role="alert">{{ errorMessage }}</p>
+        }
+
+        <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Creating account…' : 'Create Job Seeker Account' }}
         </button>
 
       </form>
@@ -184,7 +235,7 @@
 
     @if (accountType === 'company') {
 
-      <form class="register-form">
+      <form class="register-form" (ngSubmit)="onSubmit()">
 
         <h2>Company Registration</h2>
 
@@ -197,7 +248,11 @@
           <input
             id="companyName"
             type="text"
+            name="companyName"
             placeholder="Enter company name"
+            [(ngModel)]="companyName"
+            required
+            maxlength="200"
           />
 
         </div>
@@ -212,7 +267,11 @@
           <input
             id="companyEmail"
             type="email"
+            name="email"
             placeholder="company@example.com"
+            [(ngModel)]="email"
+            required
+            maxlength="256"
           />
 
         </div>
@@ -220,33 +279,26 @@
 
         <div class="form-group">
 
-          <label for="companyDescription">
-            Company Description
-          </label>
-
-          <textarea
-            id="companyDescription"
-            rows="4"
-            placeholder="Tell us about your company"
-          ></textarea>
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="companyLocation">
-            Location
-          </label>
+          <label for="contactName">Contact Name</label>
 
           <input
-            id="companyLocation"
+            id="contactName"
             type="text"
-            placeholder="e.g. Addis Ababa, Ethiopia"
+            name="contactName"
+            placeholder="Your full name"
+            [(ngModel)]="contactName"
+            required
+            maxlength="150"
           />
 
         </div>
 
+        <div class="form-group">
+          <label for="website">Company Website <span>(Optional)</span></label>
+          <input id="website" name="website" type="url"
+            placeholder="https://example.com" [(ngModel)]="website"
+            maxlength="500" />
+        </div>
 
         <div class="form-row">
 
@@ -259,8 +311,15 @@
             <input
               id="companyPassword"
               type="password"
+              name="password"
               placeholder="Create a password"
+              [(ngModel)]="password"
+              required
+              minlength="8"
+              maxlength="128"
+              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,128}"
             />
+            <small>Use at least 8 characters, including uppercase, lowercase, and a number.</small>
 
           </div>
 
@@ -274,7 +333,10 @@
             <input
               id="companyConfirmPassword"
               type="password"
+              name="confirmPassword"
               placeholder="Confirm your password"
+              [(ngModel)]="confirmPassword"
+              required
             />
 
           </div>
@@ -282,10 +344,12 @@
         </div>
 
 
-        <button type="submit" class="submit-btn"
-        routerLink="/company/dashboard">
-            
-          Create Company Account
+        @if (errorMessage) {
+          <p class="form-error" role="alert">{{ errorMessage }}</p>
+        }
+
+        <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Creating account…' : 'Create Company Account' }}
         </button>
 
       </form>

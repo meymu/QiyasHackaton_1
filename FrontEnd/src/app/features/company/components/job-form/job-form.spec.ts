@@ -28,11 +28,7 @@ describe('JobForm', () => {
     component.form.setValue({
       title: 'Frontend Developer',
       description: 'Build Angular interfaces for our platform.',
-      location: 'Addis Ababa',
-      type: 'Full-time',
       skills: 'Angular, TypeScript, ',
-      salary: '',
-      deadline: '2026-12-01',
     });
     component.submit();
 
@@ -40,7 +36,6 @@ describe('JobForm', () => {
       expect.objectContaining({
         title: 'Frontend Developer',
         skills: ['Angular', 'TypeScript'],
-        salary: undefined,
       }),
     );
   });
@@ -48,14 +43,15 @@ describe('JobForm', () => {
   it('fills the form and switches to edit mode when a job is provided', () => {
     fixture.componentRef.setInput('job', {
       id: 1,
+      employerProfileId: 3,
       title: 'Backend Intern',
       description: 'Help build REST APIs daily.',
-      location: 'Remote',
-      type: 'Internship',
-      skills: ['Node.js', 'SQL'],
-      deadline: '2026-10-30',
-      status: 'open',
-      postedAt: '2026-10-01',
+      companyName: 'SkillBridge',
+      createdAt: '2026-10-01T00:00:00Z',
+      requiredSkills: [
+        { id: 4, name: 'Node.js' },
+        { id: 5, name: 'SQL' },
+      ],
     });
     fixture.detectChanges();
 

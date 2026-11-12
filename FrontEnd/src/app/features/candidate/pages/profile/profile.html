@@ -28,6 +28,13 @@
       }
   
     </header>
+
+    @if (isLoading) {
+      <p role="status">Loading your profile...</p>
+    } @else if (errorMessage) {
+      <p role="alert">{{ errorMessage }}</p>
+      <button type="button" class="edit-button" (click)="loadProfile()">Retry</button>
+    } @else if (candidate; as candidate) {
   
   
     <!-- ==========================================
@@ -56,10 +63,6 @@
               {{ candidate.headline }}
             </p>
   
-            <p class="location">
-              📍 {{ candidate.location }}
-            </p>
-  
           </div>
   
         </div>
@@ -86,32 +89,7 @@
             </div>
   
   
-            <div class="contact-item">
-  
-              <span class="label">
-                Phone
-              </span>
-  
-              <strong>
-                {{ candidate.phone }}
-              </strong>
-  
-            </div>
-  
           </div>
-  
-        </div>
-  
-  
-        <!-- About -->
-  
-        <div class="profile-section">
-  
-          <h3>Professional Summary</h3>
-  
-          <p>
-            {{ candidate.summary }}
-          </p>
   
         </div>
   
@@ -124,10 +102,10 @@
   
           <div class="skills-list">
   
-            @for (skill of candidate.skills; track skill) {
+            @for (skill of candidate.skills; track skill.id) {
   
               <span class="skill">
-                {{ skill }}
+                {{ skill.name }}
               </span>
   
             }
@@ -143,63 +121,22 @@
   
           <h3>Education</h3>
   
-          @for (
-            education of candidate.education;
-            track education.degree
-          ) {
-  
+          @if (candidate.degreeLevel || candidate.fieldOfStudy || candidate.institution || candidate.graduationYear) {
             <div class="education-item">
   
               <h4>
-                {{ education.degree }}
+                {{ candidate.degreeLevel || 'Education' }}{{ candidate.fieldOfStudy ? ' in ' + candidate.fieldOfStudy : '' }}
               </h4>
   
               <p class="institution">
-                {{ education.institution }}
+                {{ candidate.institution }}
               </p>
   
               <p class="year">
-                {{ education.year }}
+                {{ candidate.graduationYear || '' }}
               </p>
   
             </div>
-  
-          }
-  
-        </div>
-  
-  
-        <!-- Experience -->
-  
-        <div class="profile-section">
-  
-          <h3>Experience</h3>
-  
-          @for (
-            experience of candidate.experience;
-            track experience.position
-          ) {
-  
-            <div class="experience-item">
-  
-              <h4>
-                {{ experience.position }}
-              </h4>
-  
-              <p class="company">
-                {{ experience.company }}
-              </p>
-  
-              <p class="period">
-                {{ experience.period }}
-              </p>
-  
-              <p class="description">
-                {{ experience.description }}
-              </p>
-  
-            </div>
-  
           }
   
         </div>
@@ -214,7 +151,7 @@
           <div class="profile-links">
   
             <a
-              [href]="candidate.github"
+              [href]="candidate.gitHubUrl"
               target="_blank"
               rel="noopener noreferrer"
               class="profile-link">
@@ -222,15 +159,7 @@
             </a>
   
             <a
-              [href]="candidate.linkedin"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="profile-link">
-              LinkedIn →
-            </a>
-  
-            <a
-              [href]="candidate.portfolio"
+              [href]="candidate.portfolioUrl"
               target="_blank"
               rel="noopener noreferrer"
               class="profile-link">
@@ -241,40 +170,6 @@
   
         </div>
   
-  
-        <!-- Resume -->
-  
-        <div class="profile-section">
-  
-          <h3>Resume</h3>
-  
-          <div class="resume-box">
-  
-            <div class="resume-icon">
-              📄
-            </div>
-  
-            <div class="resume-info">
-  
-              <strong>
-                {{ candidate.resume }}
-              </strong>
-  
-              <span>
-                Current resume
-              </span>
-  
-            </div>
-  
-            <button
-              type="button"
-              class="resume-button">
-              View
-            </button>
-  
-          </div>
-  
-        </div>
   
       </section>
   
@@ -334,68 +229,24 @@
         </div>
   
   
-        <!-- Location -->
-  
         <div class="form-group">
-  
-          <label for="location">
-            Location
-          </label>
-  
-          <input
-            id="location"
-            type="text"
-            [(ngModel)]="candidate.location">
-  
+          <label for="institution">Institution</label>
+          <input id="institution" type="text" [(ngModel)]="candidate.institution">
         </div>
-  
-  
-        <!-- Email -->
-  
+
         <div class="form-group">
-  
-          <label for="email">
-            Email
-          </label>
-  
-          <input
-            id="email"
-            type="email"
-            [(ngModel)]="candidate.email">
-  
+          <label for="fieldOfStudy">Field of Study</label>
+          <input id="fieldOfStudy" type="text" [(ngModel)]="candidate.fieldOfStudy">
         </div>
-  
-  
-        <!-- Phone -->
-  
+
         <div class="form-group">
-  
-          <label for="phone">
-            Phone Number
-          </label>
-  
-          <input
-            id="phone"
-            type="text"
-            [(ngModel)]="candidate.phone">
-  
+          <label for="degreeLevel">Degree Level</label>
+          <input id="degreeLevel" type="text" [(ngModel)]="candidate.degreeLevel">
         </div>
-  
-  
-        <!-- Summary -->
-  
+
         <div class="form-group">
-  
-          <label for="summary">
-            Professional Summary
-          </label>
-  
-          <textarea
-            id="summary"
-            rows="6"
-            [(ngModel)]="candidate.summary">
-          </textarea>
-  
+          <label for="graduationYear">Graduation Year</label>
+          <input id="graduationYear" type="number" [(ngModel)]="candidate.graduationYear">
         </div>
   
   
@@ -410,23 +261,7 @@
           <input
             id="github"
             type="url"
-            [(ngModel)]="candidate.github">
-  
-        </div>
-  
-  
-        <!-- LinkedIn -->
-  
-        <div class="form-group">
-  
-          <label for="linkedin">
-            LinkedIn URL
-          </label>
-  
-          <input
-            id="linkedin"
-            type="url"
-            [(ngModel)]="candidate.linkedin">
+            [(ngModel)]="candidate.gitHubUrl">
   
         </div>
   
@@ -442,7 +277,7 @@
           <input
             id="portfolio"
             type="url"
-            [(ngModel)]="candidate.portfolio">
+            [(ngModel)]="candidate.portfolioUrl">
   
         </div>
   
@@ -463,9 +298,10 @@
           <button
             type="button"
             class="save-button"
+            [disabled]="isSaving"
             (click)="saveProfile()">
   
-            Save Changes
+            {{ isSaving ? 'Saving...' : 'Save Changes' }}
   
           </button>
   
@@ -473,6 +309,7 @@
   
       </section>
   
+    }
     }
   
   </div>

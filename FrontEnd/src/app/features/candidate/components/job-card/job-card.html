@@ -20,13 +20,17 @@
         {{ job.company }}
       </p>
   
-      <p class="location">
-        📍 {{ job.location }}
-      </p>
+      @if (job.location) {
+        <p class="location">
+          📍 {{ job.location }}
+        </p>
+      }
   
-      <span class="job-type">
-        {{ job.jobType }}
-      </span>
+      @if (job.jobType) {
+        <span class="job-type">
+          {{ job.jobType }}
+        </span>
+      }
   
     </div>
   

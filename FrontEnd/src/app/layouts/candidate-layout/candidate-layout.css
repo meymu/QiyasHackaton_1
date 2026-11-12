@@ -1,276 +1,82 @@
 
 .candidate-layout {
-  min-height: 100vh;
   display: flex;
-  background: #f5f7fb;
+  min-height: 100vh;
+  background: #f8fafc;
 }
 
 .sidebar {
-  width: 240px;
-  min-height: 100vh;
-  background: #111827;
-  color: white;
-  padding: 25px 18px;
-  box-sizing: border-box;
+  width: 250px;
+  flex-shrink: 0;
+  background: #0b0836;
+  border-right: 1px solid #e2e8f0;
+  padding: 28px 18px;
   display: flex;
   flex-direction: column;
 }
 
 .brand {
-  padding: 10px;
-  margin-bottom: 35px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  margin: 0 0 35px;
+  color: #2563eb;
+  font-size: 25px;
 }
 
-.brand-icon {
-  width: 35px;
-  height: 35px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #4f46e5;
-  color: white;
+.menu-label {
+  color: #94a3b8;
+  font-size: 12px;
   font-weight: 700;
+  margin-bottom: 14px;
 }
 
-.brand span {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.candidate-mini-profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #374151;
-  padding-bottom: 20px;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #4f46e5;
-  color: white;
-  font-weight: 600;
-}
-
-.candidate-mini-profile div:last-child {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.candidate-mini-profile strong {
-  font-size: 13px;
-}
-
-.candidate-mini-profile span {
-  color: #9ca3af;
-  font-size: 11px;
-}
-
-.navigation {
+.sidebar nav {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.nav-title {
+.sidebar nav a,
+.logout-link {
   display: block;
-  margin: 12px 10px 5px;
-  color: #9ca3af;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.nav-item {
-  padding: 13px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #d1d5db;
-  text-decoration: none;
+  padding: 12px;
   border-radius: 8px;
-  transition: 0.2s;
+  text-decoration: none;
+  color: #475569;
+  font-weight: 500;
 }
 
-.nav-item:hover,
-.nav-item.active {
-  background: #4f46e5;
-  color: white;
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background: #eff6ff;
+  color: #2563eb;
 }
 
-.nav-icon {
-  width: 20px;
-  text-align: center;
-}
-
-.sidebar-bottom {
+.logout-link {
   margin-top: auto;
 }
 
-.logout-button {
-  width: 100%;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: none;
-  border-radius: 8px;
-  background: #374151;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.logout-button:hover {
-  background: #4b5563;
-}
-
-.main-area {
+.main-content {
   flex: 1;
   min-width: 0;
+  padding: 32px;
 }
 
-.topbar {
-  height: 70px;
-  padding: 0 30px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  box-sizing: border-box;
-}
-
-.topbar-spacer {
-  flex: 1;
-}
-
-.mobile-brand {
-  display: none;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.notification {
-  position: relative;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.notification-dot {
-  position: absolute;
-  top: 0;
-  right: -2px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ef4444;
-}
-
-.topbar-profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.topbar-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #4f46e5;
-  color: white;
-  font-weight: 600;
-}
-
-.topbar-user {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.topbar-user strong {
-  font-size: 13px;
-}
-
-.topbar-user span {
-  color: #6b7280;
-  font-size: 11px;
-}
-
-.page-content {
-  min-height: calc(100vh - 70px);
-}
-
-@media (max-width: 800px) {
-  .sidebar {
-    width: 200px;
-  }
-
-  .topbar {
-    padding: 0 20px;
-  }
-}
-
-@media (max-width: 600px) {
-  .sidebar {
-    width: 180px;
-  }
-
-  .topbar-profile {
-    display: none;
-  }
-
-  .mobile-brand {
-    display: block;
-  }
-}
-
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .candidate-layout {
     flex-direction: column;
   }
 
   .sidebar {
-    width: 100%;
-    min-height: auto;
+    width: auto;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
   }
 
-  .brand {
-    margin-bottom: 15px;
-  }
-
-  .candidate-mini-profile {
-    margin-bottom: 15px;
-  }
-
-  .navigation {
+  .sidebar nav {
     flex-direction: row;
-    overflow-x: auto;
+    flex-wrap: wrap;
   }
 
-  .nav-title {
-    display: none;
-  }
-
-  .nav-item {
-    white-space: nowrap;
-  }
-
-  .sidebar-bottom {
-    margin-top: 20px;
+  .main-content {
+    padding: 18px;
   }
 }

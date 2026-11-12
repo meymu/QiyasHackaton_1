@@ -1,0 +1,43 @@
+
+<div class="company-layout">
+
+  <aside class="sidebar">
+    <h2 class="brand">SkillBridge</h2>
+
+    <p class="menu-label">COMPANY MENU</p>
+
+    <nav>
+      <a
+        routerLink="/company/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        🏠 Dashboard
+      </a>
+
+      <a
+        routerLink="/company/jobs"
+        routerLinkActive="active">
+        💼 Manage Jobs
+      </a>
+
+      <a routerLink="/company/jobs/create"
+         routerLinkActive="active">
+        ➕ Post a Job
+      </a>
+
+      <a routerLink="/company/applicants"
+         routerLinkActive="active">
+        👥 Applicants
+      </a>
+    </nav>
+
+    <a routerLink="/" class="logout-link">
+      ↩ Back to Home
+    </a>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

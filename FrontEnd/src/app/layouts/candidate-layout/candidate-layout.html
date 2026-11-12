@@ -1,201 +1,42 @@
+
 <div class="candidate-layout">
 
-    <!-- Sidebar -->
-  
-    <aside class="sidebar">
-  
-      <div class="brand">
-  
-        <div class="brand-icon">
-          S
-        </div>
-  
-        <span>
-          SkillBridge
-        </span>
-  
-      </div>
-  
-  
-      <!-- Candidate Profile -->
-  
-      <div class="candidate-mini-profile">
-  
-        <div class="avatar">
-          {{ candidateName.charAt(0) }}
-        </div>
-  
-        <div>
-  
-          <strong>
-            {{ candidateName }}
-          </strong>
-  
-          <span>
-            Candidate
-          </span>
-  
-        </div>
-  
-      </div>
-  
-  
-      <!-- Navigation -->
-  
-      <nav class="navigation">
-  
-        <span class="nav-title">
-          MAIN
-        </span>
-  
-  
-        <a
-          routerLink="/candidate/dashboard"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="nav-item">
-  
-          <span class="nav-icon">
-            🏠
-          </span>
-  
-          <span>
-            Dashboard
-          </span>
-  
-        </a>
-  
-  
-        <a
-          routerLink="/candidate/jobs"
-          routerLinkActive="active"
-          class="nav-item">
-  
-          <span class="nav-icon">
-            🔍
-          </span>
-  
-          <span>
-            Find Jobs
-          </span>
-  
-        </a>
-  
-  
-        <a
-          routerLink="/candidate/applications"
-          routerLinkActive="active"
-          class="nav-item">
-  
-          <span class="nav-icon">
-            📄
-          </span>
-  
-          <span>
-            My Applications
-          </span>
-  
-        </a>
-  
-  
-        <span class="nav-title">
-          ACCOUNT
-        </span>
-  
-  
-        <a
-          routerLink="/candidate/profile"
-          routerLinkActive="active"
-          class="nav-item">
-  
-          <span class="nav-icon">
-            👤
-          </span>
-  
-          <span>
-            My Profile
-          </span>
-  
-        </a>
-  
-      </nav>
-  
-  
-      <!-- Sidebar Bottom -->
-  
-      <div class="sidebar-bottom">
-  
-        <button class="logout-button">
-  
-          <span class="nav-icon">
-            🚪
-          </span>
-  
-          <span>
-            Logout
-          </span>
-  
-        </button>
-  
-      </div>
-  
-    </aside>
-  
-  
-    <!-- Main Area -->
-  
-    <div class="main-area">
-  
-      <!-- Top Header -->
-  
-      <header class="topbar">
-  
-        <div class="mobile-brand">
-          SkillBridge
-        </div>
-  
-        <div class="topbar-spacer"></div>
-  
-        <div class="notification">
-  
-          🔔
-  
-          <span class="notification-dot"></span>
-  
-        </div>
-  
-  
-        <div class="topbar-profile">
-  
-          <div class="topbar-avatar">
-            {{ candidateName.charAt(0) }}
-          </div>
-  
-          <div class="topbar-user">
-  
-            <strong>
-              {{ candidateName }}
-            </strong>
-  
-            <span>
-              Candidate
-            </span>
-  
-          </div>
-  
-        </div>
-  
-      </header>
-  
-  
-      <!-- Page Content -->
-  
-      <main class="page-content">
-  
-        <router-outlet></router-outlet>
-  
-      </main>
-  
-    </div>
-  
-  </div>
+  <aside class="sidebar">
+    <h2 class="brand">SkillBridge</h2>
+
+    <p class="menu-label">CANDIDATE MENU</p>
+
+    <nav>
+     
+      <a routerLink="/candidate/dashboard"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        🏠 Dashboard
+      </a>
+
+      <a routerLink="/candidate/jobs"
+         routerLinkActive="active">
+        💼 Job Listings
+      </a>
+
+      <a routerLink="/candidate/applications"
+         routerLinkActive="active">
+        📄 My Applications
+      </a>
+
+      <a routerLink="/candidate/profile"
+         routerLinkActive="active">
+        👤 My Profile
+      </a>
+    </nav>
+
+    <a routerLink="/" class="logout-link">
+      🚪 Logout
+    </a>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

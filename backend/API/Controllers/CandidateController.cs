@@ -40,6 +40,17 @@ public class CandidateController : ControllerBase
             : Ok(result);
     }
 
+    [HttpGet("me/dashboard")]
+    public async Task<IActionResult> GetDashboard(
+        CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(
+            new GetCandidateDashboardQuery(UserId),
+            cancellationToken);
+
+        return Ok(result);
+    }
+
     [HttpPost("me")]
     public async Task<IActionResult> Create(
         CreateCandidateProfileRequest request,

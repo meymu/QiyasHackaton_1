@@ -1,13 +1,13 @@
 <div class="login-page">
 
   <div class="login-card">
-
+<button routerLink="/">Back</button>
     <div class="login-header">
       <h1>Welcome Back</h1>
       <p>Login to your SkillBridge account</p>
     </div>
 
-    <form (submit)="onSubmit(); $event.preventDefault()">
+    <form (ngSubmit)="onSubmit()">
 
       <div class="form-group">
         <label for="email">Email</label>
@@ -35,8 +35,12 @@
         />
       </div>
 
-      <button type="submit" class="login-button">
-        Login
+      @if (errorMessage) {
+        <p class="form-error" role="alert">{{ errorMessage }}</p>
+      }
+
+      <button type="submit" class="login-button" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Logging in…' : 'Login' }}
       </button>
 
     </form>

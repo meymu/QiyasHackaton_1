@@ -9,31 +9,9 @@
     @if (invalid('description')) { <small>Description is required (min 20 characters)</small> }
   </label>
 
-  <label>Location
-    <input formControlName="location" />
-    @if (invalid('location')) { <small>Location is required</small> }
-  </label>
-
-  <label>Job type
-    <select formControlName="type">
-      @for (t of types; track t) {
-        <option [value]="t">{{ t }}</option>
-      }
-    </select>
-  </label>
-
   <label>Required skills (comma separated)
     <input formControlName="skills" placeholder="Angular, TypeScript" />
     @if (invalid('skills')) { <small>Add at least one skill</small> }
-  </label>
-
-  <label>Salary (optional)
-    <input formControlName="salary" />
-  </label>
-
-  <label>Deadline
-    <input type="date" formControlName="deadline" />
-    @if (invalid('deadline')) { <small>Deadline is required</small> }
   </label>
 
   <button type="submit">{{ editing ? 'Save changes' : 'Post job' }}</button>

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Job, JobInput, JobType } from '../../models/company.model';
+import { Job, JobInput } from '../../models/company.model';
 
 @Component({
   selector: 'app-job-form',
@@ -12,17 +12,12 @@ import { Job, JobInput, JobType } from '../../models/company.model';
 export class JobForm {
   private fb = inject(FormBuilder);
 
-  types: JobType[] = ['Full-time', 'Part-time', 'Internship', 'Contract'];
   editing = false;
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
     description: ['', [Validators.required, Validators.minLength(20)]],
-    location: ['', Validators.required],
-    type: ['Full-time' as JobType, Validators.required],
     skills: ['', Validators.required],
-    salary: [''],
-    deadline: ['', Validators.required],
   });
 
   @Input() set job(job: Job | null | undefined) {
@@ -31,11 +26,7 @@ export class JobForm {
     this.form.patchValue({
       title: job.title,
       description: job.description,
-      location: job.location,
-      type: job.type,
-      skills: job.skills.join(', '),
-      salary: job.salary ?? '',
-      deadline: job.deadline,
+      skills: job.requiredSkills.map(skill => skill.name).join(', '),
     });
   }
 
@@ -55,11 +46,7 @@ export class JobForm {
     this.submitted.emit({
       title: v.title.trim(),
       description: v.description.trim(),
-      location: v.location.trim(),
-      type: v.type,
       skills: v.skills.split(',').map(s => s.trim()).filter(Boolean),
-      salary: v.salary.trim() || undefined,
-      deadline: v.deadline,
     });
   }
 }

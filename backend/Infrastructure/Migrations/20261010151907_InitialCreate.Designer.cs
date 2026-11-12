@@ -12,7 +12,7 @@ using SkillBridge.Infrastructure.Context;
 namespace SkillBridge.Infrastructure.Migrations
 {
     [DbContext(typeof(SkillBridgeDbContext))]
-    [Migration("20261009113901_InitialCreate")]
+    [Migration("20261010151907_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

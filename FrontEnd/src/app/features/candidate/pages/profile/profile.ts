@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../public/services/auth.service';
+import { CandidateProfile, CandidateService } from '../../candidate.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,72 +9,80 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
-export class Profile {
-
+export class Profile implements OnInit {
   isEditing = false;
+  isLoading = true;
+  isSaving = false;
+  errorMessage = '';
+  candidate: CandidateProfile | null = null;
 
-  candidate = {
-    fullName: 'Abebe Kebede',
-    headline: 'Junior Full Stack Developer',
-    location: 'Addis Ababa, Ethiopia',
+  private readonly candidateService = inject(CandidateService);
+  private readonly authService = inject(AuthService);
 
-    email: 'abebe@example.com',
-    phone: '+251 911 123 456',
+  ngOnInit(): void {
+    this.loadProfile();
+  }
 
-    summary:
-      'Computer Science graduate with a strong interest in full-stack web development. Experienced in Angular, TypeScript, C#, .NET, SQL and Git. Passionate about building reliable and user-friendly software applications.',
-
-    skills: [
-      'Angular',
-      'TypeScript',
-      'C#',
-      '.NET',
-      'SQL',
-      'Git',
-      'HTML',
-      'CSS'
-    ],
-
-    education: [
-      {
-        degree: 'Bachelor of Science in Computer Science',
-        institution: 'Addis Ababa University',
-        year: '2025'
-      }
-    ],
-
-    experience: [
-      {
-        position: 'Junior Developer',
-        company: 'Technology Company',
-        period: '2025 - Present',
-        description:
-          'Developing and maintaining web applications using Angular, TypeScript, C# and .NET.'
-      }
-    ],
-
-    github: 'https://github.com/',
-    linkedin: 'https://linkedin.com/',
-    portfolio: 'https://portfolio.example.com',
-
-    resume: 'Abebe_Kebede_Resume.pdf'
-  };
-
+  loadProfile(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.candidateService.getProfile().subscribe({
+      next: profile => {
+        this.candidate = profile;
+        this.isLoading = false;
+      },
+      error: error => {
+        this.errorMessage = this.authService.getErrorMessage(error);
+        this.isLoading = false;
+      },
+    });
+  }
 
   editProfile() {
     this.isEditing = true;
   }
 
-
   cancelEdit() {
     this.isEditing = false;
+    this.loadProfile();
   }
 
-
   saveProfile() {
-    this.isEditing = false;
+    if (!this.candidate || this.isSaving) return;
 
-    console.log('Profile saved:', this.candidate);
+    const {
+      fullName,
+      headline,
+      institution,
+      fieldOfStudy,
+      degreeLevel,
+      graduationYear,
+      gitHubUrl,
+      portfolioUrl,
+    } = this.candidate;
+
+    this.isSaving = true;
+    this.errorMessage = '';
+    this.candidateService.updateProfile({
+      fullName,
+      headline,
+      institution,
+      fieldOfStudy,
+      degreeLevel,
+      graduationYear,
+      gitHubUrl,
+      portfolioUrl,
+    }).subscribe({
+      next: profile => {
+        this.candidate = profile;
+        this.isEditing = false;
+        this.isSaving = false;
+      },
+      error: error => {
+        this.errorMessage = this.authService.getErrorMessage(error);
+        this.isSaving = false;
+      },
+    });
   }
 
 }

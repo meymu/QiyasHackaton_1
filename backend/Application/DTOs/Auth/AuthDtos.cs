@@ -1,7 +1,7 @@
 namespace SkillBridge.Application.DTOs.Auth;
 
 
-public sealed record UserDto(int Id, string Email, string Role);
+public sealed record UserDto(int Id, string Email, string Role, string DisplayName);
 
 
 public sealed record TokenResult(string AccessToken, DateTime ExpiresAtUtc);
